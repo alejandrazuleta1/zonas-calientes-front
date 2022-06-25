@@ -1,15 +1,69 @@
 <template>
-  <q-page class="q-pa-lg">
-    <h5 class="q-mt-none">Map</h5>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id laoreet sem, vel sollicitudin augue. Maecenas bibendum lacus ut lectus imperdiet, sed rhoncus velit finibus. Vestibulum efficitur tellus in risus condimentum, nec mollis nunc rutrum. Cras ornare faucibus neque quis facilisis. Proin quis tempus nibh. Pellentesque metus sem, porttitor in enim in, aliquam elementum mauris. Vestibulum lacus magna, pellentesque eu erat eu, pharetra posuere mi. Suspendisse eu velit eleifend est luctus consequat. Pellentesque gravida volutpat mauris quis ullamcorper. Aliquam accumsan eget leo in sollicitudin. Pellentesque lobortis fringilla nibh laoreet congue. Curabitur tempor posuere ipsum pulvinar pellentesque. Morbi bibendum justo mauris, vitae ultricies turpis egestas ut. Fusce ornare diam et ligula eleifend, ut laoreet ante hendrerit.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id laoreet sem, vel sollicitudin augue. Maecenas bibendum lacus ut lectus imperdiet, sed rhoncus velit finibus. Vestibulum efficitur tellus in risus condimentum, nec mollis nunc rutrum. Cras ornare faucibus neque quis facilisis. Proin quis tempus nibh. Pellentesque metus sem, porttitor in enim in, aliquam elementum mauris. Vestibulum lacus magna, pellentesque eu erat eu, pharetra posuere mi. Suspendisse eu velit eleifend est luctus consequat. Pellentesque gravida volutpat mauris quis ullamcorper. Aliquam accumsan eget leo in sollicitudin. Pellentesque lobortis fringilla nibh laoreet congue. Curabitur tempor posuere ipsum pulvinar pellentesque. Morbi bibendum justo mauris, vitae ultricies turpis egestas ut. Fusce ornare diam et ligula eleifend, ut laoreet ante hendrerit.</p>
+   <q-page padding class="flex">
+    <q-card style="flex: 1">
+    <l-map
+      v-model="zoom"
+      v-model:zoom="zoom"
+      :center="center"
+      @move="log('move')"
+    >
+      <l-tile-layer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      ></l-tile-layer>
+
+      <l-geo-json
+        v-if="showGeoJsonMedellin"
+        :geojson="geojsonmedellin"
+        :options="optionsGeoJson"
+      />
+
+      <l-geo-json
+        :geojson="geojson"
+        :options="optionsGeoJson"
+      />
+
+    </l-map>
+    </q-card>
   </q-page>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import {
+  LMap,
+  LTileLayer,
+  LGeoJson
+} from '@vue-leaflet/vue-leaflet'
+import 'leaflet/dist/leaflet.css'
+import jsonMedellin from 'src/geojsondata/medellin.json'
+import jsonHexagonos from 'src/geojsondata/hexagonos2000.json'
 
-export default defineComponent({
-  name: 'IndexPage'
-})
+export default {
+  name: 'ZonasClientes',
+  components: {
+    LMap,
+    LTileLayer,
+    LGeoJson
+  },
+  data () {
+    return {
+      zoom: 11,
+      center: [6.244203, -75.581215],
+      geojsonmedellin: jsonMedellin,
+      geojson: null,
+      optionsGeoJson: {
+      },
+      showGeoJsonMedellin: false
+    }
+  },
+  methods: {
+    log (a) {
+      console.log(a)
+    }
+  },
+  async created () {
+    // const response = await fetch("https://rawgit.com/gregoiredavid/france-geojson/master/regions/pays-de-la-loire/communes-pays-de-la-loire.geojson")
+    // const data = await response.json();
+    this.geojson = jsonHexagonos
+  }
+}
 </script>
