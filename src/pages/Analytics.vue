@@ -1,19 +1,11 @@
 <template>
   <div class="q-pa-md row items-start q-gutter-md">
-    <div id="chartLine">
       <Chart :options="chartLineOptions" :series="seriesLine" />
-    </div>
-    <div id="charDonut">
       <Chart :options="chartDonutOptions" :series="seriesDonut" />
-    </div>
   </div>
   <div class="q-pa-md row items-start q-gutter-md">
-    <div id="chartbar">
       <Chart :options="chartBarOptions" :series="seriesLine" />
-    </div>
-    <div id="charDonut">
       <Chart :options="chartAreaOptions" :series="seriesArea" />
-    </div>
   </div>
 </template>
 
