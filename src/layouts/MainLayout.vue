@@ -20,7 +20,11 @@
     <q-drawer
         v-model="leftDrawerOpen"
         show-if-above
+        :mini="miniState"
+        @mouseover="miniState = false"
+        @mouseout="miniState = true"
         :width="200"
+        bordered
         :breakpoint="500"
       >
         <q-scroll-area class="fit">
@@ -35,7 +39,7 @@
               </q-item-section>
 
               <q-item-section>
-                Map
+                Mapa
               </q-item-section>
             </q-item>
 
@@ -49,7 +53,7 @@
               </q-item-section>
 
               <q-item-section>
-                Reports
+                Reportes
               </q-item-section>
             </q-item>
 
@@ -63,7 +67,7 @@
               </q-item-section>
 
               <q-item-section>
-                Analytics
+                Analítica
               </q-item-section>
             </q-item>
 
@@ -77,7 +81,7 @@
               </q-item-section>
 
               <q-item-section>
-                Calendar
+                Calendario
               </q-item-section>
             </q-item>
 
@@ -91,7 +95,7 @@
               </q-item-section>
 
               <q-item-section>
-                Settings
+                Configuración
               </q-item-section>
             </q-item>
           </q-list>
@@ -117,7 +121,8 @@ export default defineComponent({
       leftDrawerOpen,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
-      }
+      },
+      miniState: ref(true)
     }
   }
 })

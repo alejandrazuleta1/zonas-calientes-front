@@ -1,15 +1,147 @@
 <template>
-  <q-page class="q-pa-lg">
-    <h5 class="q-mt-none">Reports</h5>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id laoreet sem, vel sollicitudin augue. Maecenas bibendum lacus ut lectus imperdiet, sed rhoncus velit finibus. Vestibulum efficitur tellus in risus condimentum, nec mollis nunc rutrum. Cras ornare faucibus neque quis facilisis. Proin quis tempus nibh. Pellentesque metus sem, porttitor in enim in, aliquam elementum mauris. Vestibulum lacus magna, pellentesque eu erat eu, pharetra posuere mi. Suspendisse eu velit eleifend est luctus consequat. Pellentesque gravida volutpat mauris quis ullamcorper. Aliquam accumsan eget leo in sollicitudin. Pellentesque lobortis fringilla nibh laoreet congue. Curabitur tempor posuere ipsum pulvinar pellentesque. Morbi bibendum justo mauris, vitae ultricies turpis egestas ut. Fusce ornare diam et ligula eleifend, ut laoreet ante hendrerit.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id laoreet sem, vel sollicitudin augue. Maecenas bibendum lacus ut lectus imperdiet, sed rhoncus velit finibus. Vestibulum efficitur tellus in risus condimentum, nec mollis nunc rutrum. Cras ornare faucibus neque quis facilisis. Proin quis tempus nibh. Pellentesque metus sem, porttitor in enim in, aliquam elementum mauris. Vestibulum lacus magna, pellentesque eu erat eu, pharetra posuere mi. Suspendisse eu velit eleifend est luctus consequat. Pellentesque gravida volutpat mauris quis ullamcorper. Aliquam accumsan eget leo in sollicitudin. Pellentesque lobortis fringilla nibh laoreet congue. Curabitur tempor posuere ipsum pulvinar pellentesque. Morbi bibendum justo mauris, vitae ultricies turpis egestas ut. Fusce ornare diam et ligula eleifend, ut laoreet ante hendrerit.</p>
-  </q-page>
+  <div class="q-pa-md row items-start q-gutter-md">
+    <q-card class="my-card" flat bordered>
+      <q-item>
+        <q-item-section avatar>
+          <q-icon name="done" />
+        </q-item-section>
+
+        <q-item-section>
+          <q-item-label>@user_nickname</q-item-label>
+          <q-item-label caption>
+            {{ date }}
+          </q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <q-separator />
+      <q-card-section>
+        {{ lorem }}
+      </q-card-section>
+
+    </q-card>
+
+    <q-card class="my-card" flat bordered>
+      <q-item>
+        <q-item-section avatar>
+          <q-icon name="hourglass_empty" />
+        </q-item-section>
+
+        <q-item-section>
+          <q-item-label>@user_nickname</q-item-label>
+          <q-item-label caption>
+            {{ date }}
+          </q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <q-separator />
+      <q-card-section>
+        {{ lorem }}
+      </q-card-section>
+
+    </q-card>
+
+    <q-card class="my-card" flat bordered>
+      <q-item>
+        <q-item-section avatar>
+          <q-icon name="done" />
+        </q-item-section>
+
+        <q-item-section>
+          <q-item-label>@user_nickname</q-item-label>
+          <q-item-label caption>
+            {{ date }}
+          </q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <q-separator />
+      <q-card-section>
+        {{ lorem }}
+      </q-card-section>
+
+    </q-card>
+
+    <q-card class="my-card" flat bordered>
+      <q-item>
+        <q-item-section avatar>
+          <q-icon name="hourglass_empty" />
+        </q-item-section>
+
+        <q-item-section>
+          <q-item-label>@user_nickname</q-item-label>
+          <q-item-label caption>
+            {{ date }}
+          </q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <q-separator />
+      <q-card-section>
+        {{ lorem }}
+      </q-card-section>
+
+    </q-card>
+    <q-card class="my-card" flat bordered>
+      <q-item>
+        <q-item-section avatar>
+          <q-icon name="hourglass_empty" />
+        </q-item-section>
+
+        <q-item-section>
+          <q-item-label>@user_nickname</q-item-label>
+          <q-item-label caption>
+            {{ date }}
+          </q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <q-separator />
+      <q-card-section>
+        {{ lorem }}
+      </q-card-section>
+
+    </q-card>
+    <q-card class="my-card" flat bordered>
+      <q-item>
+        <q-item-section avatar>
+          <q-icon name="hourglass_empty" />
+        </q-item-section>
+
+        <q-item-section>
+          <q-item-label>@user_nickname</q-item-label>
+          <q-item-label caption>
+            {{ date }}
+          </q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <q-separator />
+      <q-card-section>
+        {{ lorem }}
+      </q-card-section>
+
+    </q-card>
+  </div>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'IndexPage'
+  name: 'IndexPage',
+  data () {
+    return {
+      lorem: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      date: '18/06/2022 - 18:32'
+    }
+  }
 })
 </script>
+
+<style lang="sass" scoped>
+.my-card
+  width: 100%
+  max-width: 350px
+</style>
