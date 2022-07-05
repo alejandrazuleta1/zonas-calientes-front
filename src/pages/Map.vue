@@ -9,7 +9,7 @@
       @move="log('move')"
     >
       <l-tile-layer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        url="https://api.mapbox.com/styles/v1/alejandrazuletag1/cl58okeq8000314pc35isoap0/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiYWxlamFuZHJhenVsZXRhZzEiLCJhIjoiY2w1OG84ZjhtMjQyNDNqcXF4aHF5bjhmZiJ9.VOCLSGv2CSmtYHzRTn-BvQ"
       ></l-tile-layer>
 
       <l-control-zoom position="bottomright"  ></l-control-zoom>
@@ -28,7 +28,7 @@
           :dashArray="dasharray"
           :weight="weight"
           :fill="true"
-          :fillOpacity="0.3"
+          :fillOpacity="0.2"
           :fillColor="getColor(value.intensity)"
         />
       </ul>
@@ -53,9 +53,9 @@
         </q-expansion-item>
       </l-control>
 
-<!--       <l-control position="topleft" style="max-width: 350px width: 100%">
-
-      </l-control> -->
+      <l-control position="topleft" style="max-width: 350px width: 100%">
+        <SearchBox></SearchBox>
+      </l-control>
 
     </l-map>
     </q-card>
@@ -77,6 +77,8 @@ import jsonMedellin from 'src/geojsondata/medellin.json'
 import jsonHexagonos from 'src/geojsondata/hexagonos2000.json'
 import Chart from 'src/components/Chart.vue'
 import { Geolocation } from '@capacitor/geolocation'
+import { OpenStreetMapProvider } from 'leaflet-geosearch'
+import SearchBox from 'src/components/SearchBox.vue'
 
 export default {
   name: 'ZonasClientes',
@@ -88,11 +90,12 @@ export default {
     LControlZoom,
     LControl,
     Chart,
-    LMarker
+    LMarker,
+    SearchBox
   },
   data () {
     return {
-      zoom: 12,
+      zoom: 13,
       center: [6.244203, -75.581215],
       geojsonmedellin: null,
       geojson: null,
@@ -104,6 +107,11 @@ export default {
       dasharray: '3',
       weight: 1,
       overviewTitle: 'Overview',
+      geoSearchOptions: {
+        provider: new OpenStreetMapProvider(),
+        showMarker: false,
+        autoClose: true
+      },
       chartLineOptions: {
         chart: {
           id: 'basic-line',
@@ -146,11 +154,11 @@ export default {
   async created () {
     // const response = await fetch("https://rawgit.com/gregoiredavid/france-geojson/master/regions/pays-de-la-loire/communes-pays-de-la-loire.geojson")
     // const data = await response.json();
-    const coordinates = await Geolocation.getCurrentPosition()
-    this.markerLatLng = await [coordinates.coords.latitude, coordinates.coords.longitude]
     this.geojson = jsonHexagonos
     this.geojsonmedellin = jsonMedellin
     this.polygons = jsonHexagonos.map(a => { return { coordinates: a.geometry.coordinates[0], intensity: a.properties.intensity } }).map(polygon => { return { intensity: polygon.intensity, coordinates: polygon.coordinates.map(a => [a[1], a[0]]) } })
+    const coordinates = await Geolocation.getCurrentPosition()
+    this.markerLatLng = await [coordinates.coords.latitude, coordinates.coords.longitude]
   }
 }
 </script>
