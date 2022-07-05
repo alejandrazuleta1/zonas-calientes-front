@@ -33,47 +33,29 @@
         />
       </ul>
 
-      <l-control position="topright">
-        <q-card style="max-width: 200px">
-          <q-card-section>
-            <div class="text-subtitle2">Estado actual</div>
-          </q-card-section>
+      <l-marker
+        :lat-lng="markerLatLng" ></l-marker>
 
-          <q-separator inset />
+      <l-control position="topright" style="max-width: 350px width: 100%">
+        <q-expansion-item
+          class="expansion-item"
+          expand-separator
+          icon="location_on"
+          label="Riesgo bajo"
+          caption="Mi ubicación actual"
+        >
+          <q-card >
+            <q-card-section>
+              <Chart :options="chartLineOptions" :series="seriesLine" />
+            </q-card-section>
+          </q-card>
 
-          <q-list>
-            <q-item>
-              <q-item-section avatar>
-                <q-icon color="green" name="visibility" />
-              </q-item-section>
-
-              <q-item-section>
-                <q-item-label>35%</q-item-label>
-              </q-item-section>
-            </q-item>
-
-            <q-item>
-              <q-item-section avatar>
-                <q-icon color="yellow" name="visibility" />
-              </q-item-section>
-
-              <q-item-section>
-                <q-item-label>62%</q-item-label>
-              </q-item-section>
-            </q-item>
-
-            <q-item>
-              <q-item-section avatar>
-                <q-icon color="red" name="visibility" />
-              </q-item-section>
-
-              <q-item-section>
-                <q-item-label>3%</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-card>
+        </q-expansion-item>
       </l-control>
+
+<!--       <l-control position="topleft" style="max-width: 350px width: 100%">
+
+      </l-control> -->
 
     </l-map>
     </q-card>
@@ -87,11 +69,14 @@ import {
   LGeoJson,
   LPolygon,
   LControlZoom,
-  LControl
+  LControl,
+  LMarker
 } from '@vue-leaflet/vue-leaflet'
 import 'leaflet/dist/leaflet.css'
 import jsonMedellin from 'src/geojsondata/medellin.json'
 import jsonHexagonos from 'src/geojsondata/hexagonos2000.json'
+import Chart from 'src/components/Chart.vue'
+import { Geolocation } from '@capacitor/geolocation'
 
 export default {
   name: 'ZonasClientes',
@@ -101,21 +86,44 @@ export default {
     LGeoJson,
     LPolygon,
     LControlZoom,
-    LControl
+    LControl,
+    Chart,
+    LMarker
   },
   data () {
     return {
-      zoom: 13,
+      zoom: 12,
       center: [6.244203, -75.581215],
       geojsonmedellin: null,
       geojson: null,
       showGeoJsonMedellin: false,
       showGeoJsonHexagons: true,
       polygons: null,
+      markerLatLng: null,
       borderColor: 'white',
       dasharray: '3',
       weight: 1,
-      overviewTitle: 'Overview'
+      overviewTitle: 'Overview',
+      chartLineOptions: {
+        chart: {
+          id: 'basic-line',
+          type: 'line'
+        },
+        xaxis: {
+          categories: [...Array(24).keys()]
+        },
+        yaxis: {
+          title: 'Cantidad'
+        },
+        title: {
+          text: 'Predicción día',
+          align: 'left'
+        }
+      },
+      seriesLine: [{
+        name: 'series-1',
+        data: Array.from({ length: 24 }, () => Math.floor(Math.random() * 24))
+      }]
     }
   },
   methods: {
@@ -138,9 +146,17 @@ export default {
   async created () {
     // const response = await fetch("https://rawgit.com/gregoiredavid/france-geojson/master/regions/pays-de-la-loire/communes-pays-de-la-loire.geojson")
     // const data = await response.json();
+    const coordinates = await Geolocation.getCurrentPosition()
+    this.markerLatLng = await [coordinates.coords.latitude, coordinates.coords.longitude]
     this.geojson = jsonHexagonos
     this.geojsonmedellin = jsonMedellin
     this.polygons = jsonHexagonos.map(a => { return { coordinates: a.geometry.coordinates[0], intensity: a.properties.intensity } }).map(polygon => { return { intensity: polygon.intensity, coordinates: polygon.coordinates.map(a => [a[1], a[0]]) } })
   }
 }
 </script>
+
+<style lang="sass" scoped>
+.expansion-item
+  background-color: white
+  border-radius: 8px
+</style>
