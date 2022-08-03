@@ -7,6 +7,7 @@
       :center="center"
       :options="{zoomControl: false}"
       @move="log('move')"
+      @click="getLocation"
     >
       <l-tile-layer
         url="https://api.mapbox.com/styles/v1/alejandrazuletag1/cl58okeq8000314pc35isoap0/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiYWxlamFuZHJhenVsZXRhZzEiLCJhIjoiY2w1OG84ZjhtMjQyNDNqcXF4aHF5bjhmZiJ9.VOCLSGv2CSmtYHzRTn-BvQ"
@@ -149,6 +150,9 @@ export default {
         default:
           return 'orange'
       }
+    },
+    getLocation (event) {
+      this.log(event.latlng)
     }
   },
   async created () {
