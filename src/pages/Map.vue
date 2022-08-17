@@ -75,7 +75,7 @@ import {
 } from '@vue-leaflet/vue-leaflet'
 import 'leaflet/dist/leaflet.css'
 import jsonMedellin from 'src/geojsondata/medellin.json'
-import jsonHexagonos from 'src/geojsondata/hexagonos2000.json'
+import jsonHexagonos from 'src/geojsondata/hexaGeoJson.json'
 import Chart from 'src/components/Chart.vue'
 import { Geolocation } from '@capacitor/geolocation'
 import { OpenStreetMapProvider } from 'leaflet-geosearch'
@@ -160,7 +160,7 @@ export default {
     // const data = await response.json();
     this.geojson = jsonHexagonos
     this.geojsonmedellin = jsonMedellin
-    this.polygons = jsonHexagonos.map(a => { return { coordinates: a.geometry.coordinates[0], intensity: a.properties.intensity } }).map(polygon => { return { intensity: polygon.intensity, coordinates: polygon.coordinates.map(a => [a[1], a[0]]) } })
+    this.polygons = jsonHexagonos.map(a => { return { coordinates: a.geometry.coordinates[0], intensity: a.properties.intensity } }).map(polygon => { return { intensity: polygon.intensity * Math.floor(Math.random() * 5), coordinates: polygon.coordinates.map(a => [a[1], a[0]]) } })
     const coordinates = await Geolocation.getCurrentPosition()
     this.markerLatLng = await [coordinates.coords.latitude, coordinates.coords.longitude]
   }
