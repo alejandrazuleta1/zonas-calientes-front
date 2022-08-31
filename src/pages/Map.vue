@@ -34,6 +34,17 @@
         />
       </ul>
 
+      <l-polygon
+          :key='componentKey'
+          :lat-lngs="polygon_coordinates"
+          :color="borderColor"
+          :dashArray="dasharray"
+          :weight="weight"
+          :fill="true"
+          :fillOpacity="0.2"
+          :fillColor="getColor(polygon_intensity)"
+        />
+
       <l-marker
         :lat-lng="markerLatLng" ></l-marker>
 
@@ -101,8 +112,9 @@ export default {
       geojsonmedellin: null,
       geojson: null,
       showGeoJsonMedellin: false,
-      showGeoJsonHexagons: true,
+      showGeoJsonHexagons: false,
       polygons: null,
+      componentKey: 0,
       markerLatLng: null,
       borderColor: 'white',
       dasharray: '3',
@@ -153,14 +165,45 @@ export default {
     },
     getLocation (event) {
       this.log(event.latlng)
+      this.getInformation(event.latlng)
+    },
+    async getInformation (latlng) {
+      const response = await fetch('http://localhost:4001/hexagonos/obtenerVecindad/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          longitud: latlng.lng,
+          latitud: latlng.lat
+        })
+      })
+      if (response.ok) {
+        const data = await response.json()
+        this.log(data.data[0])
+        this.showGeoJsonHexagons = true
+        this.polygons = data.data.map(a => { return { coordinates: a.geometry.coordinates[0], id: a._id } })
+          .map(polygon => {
+            return {
+              intensity: 1 * Math.floor(Math.random() * 5),
+              coordinates: polygon.coordinates
+                .map(a => [a[1], a[0]]),
+              id: polygon.id
+            }
+          })
+        // this.polygon_coordinates = data.data[0].geometry.coordinates[0]
+        // this.polygon_coordinates = [this.polygon_coordinates.map(a => [a[1], a[0]])]
+        // this.log(this.polygon_coordinates)
+        this.polygon_intensity = Math.floor(Math.random() * 5)
+        this.componentKey += 1
+      }
     }
   },
   async created () {
-    // const response = await fetch("https://rawgit.com/gregoiredavid/france-geojson/master/regions/pays-de-la-loire/communes-pays-de-la-loire.geojson")
-    // const data = await response.json();
     this.geojson = jsonHexagonos
     this.geojsonmedellin = jsonMedellin
-    this.polygons = jsonHexagonos.map(a => { return { coordinates: a.geometry.coordinates[0], intensity: a.properties.intensity } }).map(polygon => { return { intensity: polygon.intensity * Math.floor(Math.random() * 5), coordinates: polygon.coordinates.map(a => [a[1], a[0]]) } })
+    // this.polygons = jsonHexagonos.map(a => { return { coordinates: a.geometry.coordinates[0], id: a._id } }).map(polygon => { return { intensity: 1 * Math.floor(Math.random() * 5), coordinates: polygon.coordinates.map(a => [a[1], a[0]]), id: polygon.id } })
     const coordinates = await Geolocation.getCurrentPosition()
     this.markerLatLng = await [coordinates.coords.latitude, coordinates.coords.longitude]
   }
