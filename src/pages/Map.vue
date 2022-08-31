@@ -192,10 +192,6 @@ export default {
               id: polygon.id
             }
           })
-        // this.polygon_coordinates = data.data[0].geometry.coordinates[0]
-        // this.polygon_coordinates = [this.polygon_coordinates.map(a => [a[1], a[0]])]
-        // this.log(this.polygon_coordinates)
-        this.polygon_intensity = Math.floor(Math.random() * 5)
         this.componentKey += 1
       }
     }
@@ -203,9 +199,8 @@ export default {
   async created () {
     this.geojson = jsonHexagonos
     this.geojsonmedellin = jsonMedellin
-    // this.polygons = jsonHexagonos.map(a => { return { coordinates: a.geometry.coordinates[0], id: a._id } }).map(polygon => { return { intensity: 1 * Math.floor(Math.random() * 5), coordinates: polygon.coordinates.map(a => [a[1], a[0]]), id: polygon.id } })
     const coordinates = await Geolocation.getCurrentPosition()
-    this.markerLatLng = await [coordinates.coords.latitude, coordinates.coords.longitude]
+    this.markerLatLng = [coordinates.coords.latitude, coordinates.coords.longitude]
   }
 }
 </script>
